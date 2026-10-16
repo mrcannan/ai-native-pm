@@ -1,8 +1,10 @@
 # ai-native-pm
 
-Tools from one product manager's AI-run workflow, published one a week.
+Small tools that catch the ways AI-drafted PM work fails before anyone else sees it. One a week.
 
-Each is something that runs in my own system every day, extracted, de-identified and given a self-test so you can drop it into yours. No prompts-as-content, no essays. Scripts, configs and the hook wiring that makes them fire automatically.
+Each one runs in my own system every day. It is extracted, stripped of anything private, given a self-test, and documented so you can drop it into yours in a few minutes. No prompts-as-content, no essays. Scripts, settings files and the wiring that makes them run automatically.
+
+**Start here:** [artefact-lint](weeks/01-artefact-lint/) checks a roadmap, PRD or status update and tells you, line by line, what your reader will have to ask about. Two commands to try it.
 
 ## Who this is for
 

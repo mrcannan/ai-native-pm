@@ -1,13 +1,36 @@
 # artefact-lint
 
-A linter for the documents PMs send to other people: PRDs, roadmaps, one-pagers, briefs, status updates. It fails the draft when a reader could not act on it without asking a question.
+You paste an AI-drafted roadmap, PRD, brief or status update into this and it tells you, line by line, why your manager will have to ask a question before they can act on it. No dates on three items. A risks section that does not belong. Four phrases that read as AI. Fix those, run it again, send.
+
+Think of it as a spell-checker for structure. Spell-check says "this word is wrong". This says "line 8 has no date".
+
+## Try it in 30 seconds
+
+```bash
+git clone https://github.com/mrcannan/ai-native-pm && cd ai-native-pm/weeks/01-artefact-lint
+python3 artefact_lint.py examples/q1-roadmap.md
+```
+
+You will see:
+
+```
+REVISE  examples/q1-roadmap.md  [roadmap]
+  [MUST B] No story brief. Answer these four in frontmatter `story:` before drafting: audience, outcome, impact, key_info.
+  [MUST G] Roadmap is mixing genres. Risks, decision logs and findings are not roadmap; move them to a linked file. Sections: L10 ## Risks; L13 ## Decisions
+  [MUST D] 3/3 in-flight items carry no date (L8; L11; L14). Every in-flight item needs a date — committed, '(est.)', or when the firm date gets confirmed.
+  [MUST A] AI tells present: comprehensive overview, ever-evolving, in today's, it's worth noting. Strip them.
+  [MUST A] Enumeration chain (furthermore, moreover) reads as generated. Use 'Also', or make it a list.
+```
+
+Now run it on the fixed version, `examples/q1-roadmap-fixed.md`, and it passes. Open both files side by side; the difference is the whole point.
 
 Three files, no dependencies beyond Python 3.9+.
 
 ```
-artefact_lint.py      the linter (run --selftest first)
-readability.py        plain-English word list and scorer, imported by the linter
-artefact-craft.json   scope globs, word budgets, genre rules. Edit to taste.
+artefact_lint.py      the checker (run --selftest first)
+readability.py        plain-English word list and scorer, imported by the checker
+artefact-craft.json   which files to check, word budgets, genre rules. Edit to taste.
+examples/             a bad roadmap and its fixed twin
 ```
 
 ## Why
@@ -16,7 +39,7 @@ AI makes a document fast to produce and slow to use. The usual failure is not th
 
 It deliberately does not lint analysis, dashboards, SQL, notebooks or code. The problem it targets is editing discipline in documents.
 
-## Use
+## All the ways to run it
 
 ```bash
 python3 artefact_lint.py --selftest                 # 31 cases, every check exercised
@@ -27,18 +50,6 @@ cat draft.md | python3 artefact_lint.py --stdin --path docs/brief.md --json
 ```
 
 Exit codes: `0` pass or out of scope, `2` findings, `1` usage error.
-
-Example output on a roadmap that was pasted straight from a chat window:
-
-```
-REVISE  docs/q1-roadmap.md  [roadmap]
-  [MUST B] No story brief. Answer these four in frontmatter `story:` before drafting: audience, outcome, impact, key_info.
-  [MUST G] Roadmap is mixing genres. Risks, decision logs and findings are not roadmap; move them to a linked file. Sections: L10 ## Risks; L13 ## Decisions
-  [MUST D] 3/3 in-flight items carry no date (L8; L11; L14). Every in-flight item needs a date — committed, '(est.)', or when the firm date gets confirmed.
-  [MUST A] AI tells present: comprehensive overview, ever-evolving, in today's, it's worth noting. Strip them.
-  [MUST A] Enumeration chain (furthermore, moreover) reads as generated. Use 'Also', or make it a list.
-  Bar: outputs must be actionable without further interpretation.
-```
 
 ## What it checks
 

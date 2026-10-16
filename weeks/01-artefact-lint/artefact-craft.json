@@ -1,0 +1,58 @@
+{
+  "version": "1.0",
+  "bar": "Outputs need to be able to be acted upon without further interpretation.",
+  "principle": "AI should be saving the team time, not just saving you time.",
+  "scope_note": "Binds HUMAN-FACING PM artefacts only. Do not point it at analysis, dashboards, SQL, notebooks or code.",
+  "trigger_globs": [
+    "*prd*.md",
+    "*roadmap*.md",
+    "*one-pager*.md",
+    "*onepager*.md",
+    "*brief*.md",
+    "*status*.md",
+    "*update*.md",
+    "docs/plans/*.md",
+    "docs/plans/**/*.md",
+    "docs/roadmap/*.md",
+    "docs/roadmap/**/*.md",
+    "docs/one-pagers/*.md",
+    "docs/one-pagers/**/*.md"
+  ],
+  "exempt_globs": [
+    "**/.claude/**",
+    "**/tools/**",
+    "**/dashboard/**",
+    "**/node_modules/**",
+    "**/archive/**",
+    "notes/**",
+    "**/*-template.md",
+    "**/README.md",
+    "**/_index.md"
+  ],
+  "thresholds": {
+    "word_budget": {
+      "roadmap": 1500,
+      "prd": 3000,
+      "one-pager": 900,
+      "brief": 2200,
+      "status": 900,
+      "generic": 3500
+    },
+    "emdash_per_1000_prose_words": 22,
+    "max_bullet_run": 6,
+    "max_sentence_words": 30,
+    "opening_prose_lines_max": 3,
+    "word_budget_hard_multiple": 2.0
+  },
+  "genre_mix": {
+    "roadmap": {
+      "forbidden_section_pattern": "(?i)\\b(risk|risks|decision log|decisions|finding|findings|insight|insights|discovery|background|context|commentary|rationale|hypothes\\w*|assumption|research|appendix|narrative|analysis)\\b",
+      "message": "Roadmap is mixing genres. Risks, decision logs and findings are not roadmap; move them to a linked file and leave dated deliverables."
+    },
+    "prd": {
+      "forbidden_section_pattern": "(?i)(technical (approach|design)|architecture|implementation (plan|detail)|solution design|data model|schema design|api design|sequence diagram|tech stack|service design|resolver service|algorithm design|non-functional)",
+      "message": "PRD is carrying solution design. Requirements and acceptance criteria stay; technical approach belongs to the engineering lead in a linked doc."
+    }
+  },
+  "severity_note": "MUST findings (genre-mix, missing dates, essay-shaped plan, no actionable opening, AI prose texture, missing story brief) set the REVISE verdict. TRIM findings (length, long sentences, bullet runs) are craft advice and do not fail the artefact on their own, except length past the hard multiple."
+}
